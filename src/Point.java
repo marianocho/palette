@@ -44,9 +44,19 @@ public class Point extends Figure{
         this.diameter = diameter;
     }
 
-    @Override
     //toString
+    @Override
     public String toString(){
         return super.toString() + "x: " + x + ", y: " + y + "\n";
+    }
+
+    //Draw a minuscle circle(point)
+    @Override
+    public void draw(Graphics g, Color c){
+        g.setColor(color); //contour color
+        g.drawOval(x, y, diameter, diameter);
+        g.setColor(c); //filling color
+        g.fillOval(x, y, diameter, diameter);
+
     }
 }

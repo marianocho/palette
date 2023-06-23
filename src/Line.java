@@ -1,9 +1,7 @@
 import java.awt.*;
 
+/*A line that starts at point 1 (p1) and ends at point 2 (p2) */
 public class Line extends Figure{
-
-    /*A line that starts at point 1 (p1) and ends at point 2 (p2) */
-
     private Point p1, p2;
 
     //Default constructor
@@ -38,9 +36,17 @@ public class Line extends Figure{
         this.p2 = new Point(this.color, x, y);
     }
 
-    @Override
     //toString
+    @Override
     public String toString(){
         return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n";
+    }
+
+    //Draw the line
+    public void draw(Graphics g){
+        g.setColor(color); //defining the color of the drawing
+        g.drawLine(p1.getX(), p1.getY(), //point 1
+                   p2.getX(), p2.getY()  //point 2
+                   );
     }
 }

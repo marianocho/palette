@@ -27,4 +27,7 @@ public abstract class Figure{
     public String toString(){
         return "Color: " + color + "\n";
     }
+
+    //Draw the figure
+    public void draw(Graphics g, Color c){};
 }

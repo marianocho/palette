@@ -77,4 +77,16 @@ public class Rectangle extends Figure{
         this.height = deltaY;
         this.width = deltaX;
     }
+
+    //Draw the rectangle
+    @Override
+    public void draw(Graphics g, Color fc){
+        g.setColor(color); //contour color
+        calculateDimensions();
+        g.drawRect(p1.getX(), p1.getY(), //start point
+                   width, height);
+        g.setColor(fc); //filling color
+        g.fillRect(p1.getX(), p1.getY(), //same start point
+                   width, height);
+    }
 }

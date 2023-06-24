@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Window extends JFrame {
 
+    //Interactive buttons (menu)
     private JButton[] buttons = {   new JButton(Constants.figureNames[0]), 
                                     new JButton(Constants.figureNames[1]), 
                                     new JButton(Constants.figureNames[2]), 
@@ -18,6 +19,7 @@ public class Window extends JFrame {
                                     new JButton(Constants.figureNames[8]), 
                                     new JButton(Constants.figureNames[9])};
 
+    //Buttons actions
     private ActionListener[] functions = { new DrawingPoint(), 
                                            new DrawingLine (),
                                            null,

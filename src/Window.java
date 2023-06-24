@@ -37,8 +37,8 @@ public class Window extends JFrame {
     private JLabel statusBar1 = new JLabel("Message:"),
                    statusBar2 = new JLabel("Coordinates:");
 
-    private boolean waitPoint, waitBeginLine, waitEndLine,waitBeginSquare, waitEndSquare,
-            waitBeginRectangle, waitEndRectangle;
+    /*private boolean waitPoint, waitBeginLine, waitEndLine,waitBeginSquare, waitEndSquare,
+            waitBeginRectangle, waitEndRectangle;*/
 
     private Color colorOut = Color.BLACK;
 
@@ -117,7 +117,47 @@ public class Window extends JFrame {
         }
 
         public void mousePressed(MouseEvent e) {
-            if (waitPoint) {
+            switch(active){
+                case WAIT_POINT:
+                    figures.add(new Point(e.getX(), e.getY(), colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                case WAIT_BEGIN_LINE:
+                    p1 = new Point(e.getX(), e.getY(), colorOut);
+                    DrawEnum.WAIT_BEGIN_LINE.setActiveValue(false);
+                    DrawEnum.WAIT_END_LINE.setActiveValue(true);
+                    statusBar1.setText("Message: set the line final point");
+                case WAIT_END_LINE:
+                    DrawEnum.WAIT_BEGIN_LINE.setActiveValue(true);
+                    DrawEnum.WAIT_END_LINE.setActiveValue(false);
+                    figures.add(new Line(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                    statusBar1.setText("Message:");
+                case WAIT_BEGIN_SQUARE:
+                    p1 = new Point(e.getX(), e.getY(), colorOut);
+                    DrawEnum.WAIT_BEGIN_SQUARE.setActiveValue(false);
+                    DrawEnum.WAIT_END_SQUARE.setActiveValue(true);
+                    statusBar1.setText("Message: set the square side");
+                case WAIT_END_SQUARE:
+                    DrawEnum.WAIT_END_SQUARE.setActiveValue(false);
+                    DrawEnum.WAIT_BEGIN_SQUARE.setActiveValue(true);
+                    figures.add(new Square(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                    statusBar1.setText("Message:");
+                case WAIT_BEGIN_RECTANGLE:
+                    p1 = new Point(e.getX(), e.getY(), colorOut);
+                    DrawEnum.WAIT_BEGIN_RECTANGLE.setActiveValue(false);
+                    DrawEnum.WAIT_END_RECTANGLE.setActiveValue(true);
+                    statusBar1.setText("Message: set the rectangle side");
+                case WAIT_END_RECTANGLE:
+                    DrawEnum.WAIT_END_RECTANGLE.setActiveValue(false);
+                    DrawEnum.WAIT_BEGIN_RECTANGLE.setActiveValue(true);
+                    figures.add(new Rectangle(new Point(p1.getX(), p1.getY()), // first Point
+                            new Point(e.getX(), e.getY()), // width
+                            colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                    statusBar1.setText("Message:");
+            }
+            /*if (waitPoint) {
                 figures.add(new Point(e.getX(), e.getY(), colorOut));
                 figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
             } else if (waitBeginLine) {
@@ -155,7 +195,7 @@ public class Window extends JFrame {
                         colorOut));
                 figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
                 statusBar1.setText("Message:");
-            }
+            }*/
         }
 
         public void mouseReleased(MouseEvent e) {
@@ -181,10 +221,9 @@ public class Window extends JFrame {
 
     protected class DrawingPoint implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = true;
-            waitBeginLine = false;
-            waitEndLine = false;
-            
+            DrawEnum.WAIT_POINT.setActiveValue(true);
+            DrawEnum.WAIT_BEGIN_LINE.setActiveValue(false);
+            DrawEnum.WAIT_END_LINE.setActiveValue(false);
 
             statusBar1.setText("Message: set the local for the point");
         }
@@ -192,10 +231,9 @@ public class Window extends JFrame {
 
     protected class DrawingLine implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = false;
-            waitBeginLine = true;
-            waitEndLine = false;
-            
+            DrawEnum.WAIT_POINT.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_LINE.setActiveValue(true);
+            DrawEnum.WAIT_END_LINE.setActiveValue(false);
 
             statusBar1.setText("Message: set the line initial point");
         }
@@ -203,11 +241,11 @@ public class Window extends JFrame {
 
     protected class DrawingSquare implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = false;
-            waitBeginLine = false;
-            waitEndLine = false;
-            waitBeginSquare = true;
-            waitEndSquare = false;
+            DrawEnum.WAIT_POINT.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_LINE.setActiveValue(false);
+            DrawEnum.WAIT_END_LINE.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_SQUARE.setActiveValue(true);
+            DrawEnum.WAIT_END_SQUARE.setActiveValue(false);
 
             statusBar1.setText("Message: set the square intial point");
         }
@@ -215,13 +253,13 @@ public class Window extends JFrame {
 
     protected class DrawingRectangle implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = false;
-            waitBeginLine = false;
-            waitEndLine = false;
-            waitBeginSquare = false;
-            waitEndSquare = false;
-            waitBeginRectangle = true;
-            waitEndRectangle = false;
+            DrawEnum.WAIT_POINT.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_LINE.setActiveValue(false);
+            DrawEnum.WAIT_END_LINE.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_SQUARE.setActiveValue(false);
+            DrawEnum.WAIT_END_SQUARE.setActiveValue(false);
+            DrawEnum.WAIT_BEGIN_RECTANGLE.setActiveValue(true);
+            DrawEnum.WAIT_END_RECTANGLE.setActiveValue(false);
 
             statusBar1.setText("Message: set the rectangle initial point");
         }

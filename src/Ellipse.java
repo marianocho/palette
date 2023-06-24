@@ -6,25 +6,19 @@ public class Ellipse extends Figure {
     Color color;
 
     //DEfault constructor
-    public Ellipse(Point p1, Point p2, Point p3, int height, int width)
+    public Ellipse(Point p1, Point p2)
     {
         super();
         this.p1 = p1;
         this.p2 = p2;
-        this.p3 = p3;
-        this.height = height;
-        this.width = width;
-
     }
 
     //constructor with a pre-selected color
-    public Ellipse(Point p1, Point p2, Point p3, int height, int width, Color color) {
+    public Ellipse(Point p1, Point p2, Color color) {
         super(color);
         this.p1 = p1;
         this.p2 = p2;
-        this.p3 = p3;
-        this.height = height;
-        this.width = width;
+        
     }
     
     //Getters
@@ -89,24 +83,21 @@ public class Ellipse extends Figure {
         if(deltaY < 0)
             deltaY = -deltaY; //module
 
-        if(deltaX >= deltaY) //check which delta is bigger
-            if(this.width == 0)
-                this.width = deltaX;
-            else
-                this.height = deltaX;
-        else
-            if(this.height == 0)
-                this.height = deltaY;
-            else
-                this.width = deltaY;
+        if(deltaX >= deltaY) { //check which delta is bigger
+            this.width = deltaX;
+            this.height = deltaY;
+        }
+        else {
+            this.width = deltaY;
+            this.height = deltaX;
+        }
     }
-
-    public void Draw(Graphics g,Color c) {
+    public void draw(Graphics g,Color c) {
         g.setColor(this.color);
         calculateDimensions();  
         g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 
         g.setColor(c);//set color to fill in the ellipse
-        g.fillOval(this.p1.getX(), this.p1.getY(), width, height);
+        g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);
     }
         
 }

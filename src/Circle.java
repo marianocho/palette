@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.StringTokenizer;
 
 public class Circle extends Figure {
     protected Point p1,p2;
@@ -13,7 +12,7 @@ public class Circle extends Figure {
     }
 
     //Constructor with a pre-selected color
-    public Circle(Point p1, Point p2, int diameter, Color cor) {
+    public Circle(Point p1, Point p2, Color cor) {
         super(cor);
         this.p1 = p1;
         this.p2 = p2;
@@ -89,12 +88,12 @@ public class Circle extends Figure {
     //Draw the circle
     @Override
     public void draw(Graphics g, Color fc){
-        g.setColor(this.color); //contour color
+        g.setColor(this.color); //border color
         calculateDimensions();
         g.drawOval(p1.getX(), p1.getY(), //start point
                    diameter, diameter);
         g.setColor(fc); //filling color
         g.fillOval(p1.getX()+1, p1.getY()+1, //adding  1 to starting point to avoid overdrawing
-                   diameter, diameter);
+                   diameter-1, diameter-1);
     }
 }

@@ -20,8 +20,8 @@ public class Window extends JFrame {
 
     private ActionListener[] functions = { new DrawingPoint(), 
                                            new DrawingLine (),
-                                           null,
-                                           null,
+                                           new DrawingCircle(),
+                                           new DrawingEllipse(),
                                            new DrawingSquare(),
                                            new DrawingRectangle(),
                                            new colorOut(),
@@ -36,7 +36,7 @@ public class Window extends JFrame {
                    statusBar2 = new JLabel("Coordinates:");
 
     private boolean waitPoint, waitBeginLine, waitEndLine,waitBeginSquare, waitEndSquare,
-            waitBeginRectangle, waitEndRectangle;
+            waitBeginRectangle, waitEndRectangle, waitBeginCircle, waitEndCircle, waitBeginEllipse, waitEndEllipse;
 
     private Color colorOut = Color.BLACK;
 
@@ -153,7 +153,32 @@ public class Window extends JFrame {
                         colorOut));
                 figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
                 statusBar1.setText("Message:");
+            } else if(waitBeginCircle) {
+                    p1 = new Point (e.getX(), e.getY(), colorOut);
+                    waitBeginCircle = false;
+                    waitEndCircle = true;
+                    statusBar1.setText("Mensagem: set the circle border point"); 
+            } else if(waitEndCircle) {
+                waitEndCircle = false;
+                waitBeginCircle = true;
+                figures.add(new Circle(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                statusBar1.setText("Message:");
+          
+            } else if(waitBeginEllipse) {
+                p1 = new Point (e.getX(), e.getY(), colorOut);
+                waitBeginEllipse = false;
+                waitEndEllipse = true;
+                statusBar1.setText("Message: set the ellipse border"); 
+            
+            } else if(waitEndEllipse) {
+                waitEndEllipse = false;
+                waitBeginEllipse = true;
+                figures.add(new Ellipse(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut)); 
+                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
+                statusBar1.setText("Message:");
             }
+
         }
 
         public void mouseReleased(MouseEvent e) {
@@ -166,7 +191,6 @@ public class Window extends JFrame {
         }
 
         public void mouseExited(MouseEvent e) {
-            statusBar1.setText("Message: the pointer is outside the screen");
         }
 
         public void mouseDragged(MouseEvent e) {
@@ -225,6 +249,33 @@ public class Window extends JFrame {
         }
     }
 
+    protected class DrawingCircle implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            waitPoint = false;
+            waitBeginLine = false;
+            waitEndLine = false;
+            waitBeginCircle = true;
+            waitEndCircle = false;
+            
+            statusBar1.setText("Message: set the circle initial point");
+        }
+    }
+
+    protected class DrawingEllipse implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            waitPoint = false;
+            waitBeginLine = false;
+            waitEndLine = false;
+            waitBeginCircle = false;
+            waitEndCircle = false;
+            waitBeginEllipse = true;
+            waitEndEllipse = false;
+            
+            statusBar1.setText("Message: set the ellipse initial point");
+        }
+    }
+
+    
     protected class colorOut implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 

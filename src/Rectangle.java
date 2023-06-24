@@ -12,7 +12,7 @@ public class Rectangle extends Figure{
     }
 
     //Constructor with a pre-selected color
-    public Rectangle(Color color, Point p1, Point p2){
+    public Rectangle(Point p1, Point p2, Color color){
         super(color);
         this.p1 = p1;
         this.p2 = p2;
@@ -37,11 +37,11 @@ public class Rectangle extends Figure{
 
     //Setters
     public void setP1(int x, int y){
-        this.p1 = new Point(this.color, x, y);
+        this.p1 = new Point(x, y, this.color);
     }
 
     public void setP2(int x, int y){
-        this.p2 = new Point(this.color, x, y);
+        this.p2 = new Point(x, y, this.color);
     }
 
     public void setHeight(int height){
@@ -86,7 +86,7 @@ public class Rectangle extends Figure{
         g.drawRect(p1.getX(), p1.getY(), //start point
                    width, height);
         g.setColor(fc); //filling color
-        g.fillRect(p1.getX(), p1.getY(), //same start point
-                   width, height);
+        g.fillRect(p1.getX()+1, p1.getY()+1, //same start point
+                   width-1, height-1);
     }
 }

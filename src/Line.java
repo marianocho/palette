@@ -12,7 +12,7 @@ public class Line extends Figure{
     }
 
     //Constructor with a pre-selected color
-    public Line(Color color, Point p1, Point p2){
+    public Line(Point p1, Point p2, Color color){
         super(color);
         this.p1 = p1;
         this.p2 = p2;
@@ -29,11 +29,11 @@ public class Line extends Figure{
 
     //Setters
     public void setP1(int x, int y){
-        this.p1 = new Point(this.color, x, y);
+        this.p1 = new Point(x, y, this.color);
     }
 
     public void setP2(int x, int y){
-        this.p2 = new Point(this.color, x, y);
+        this.p2 = new Point(x, y, this.color);
     }
 
     //toString
@@ -43,8 +43,9 @@ public class Line extends Figure{
     }
 
     //Draw the line
-    public void draw(Graphics g){
-        g.setColor(color); //defining the color of the drawing
+    @Override
+    public void draw(Graphics g, Color color){
+        g.setColor(this.color); //defining the color of the drawing
         g.drawLine(p1.getX(), p1.getY(), //point 1
                    p2.getX(), p2.getY()  //point 2
                    );

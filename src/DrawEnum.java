@@ -1,28 +1,34 @@
-public enum DrawEnum(){
+public enum DrawEnum{
     //CASE POINT
-    WAIT_POINT(false),
+    WAIT_POINT(1),  
     //CASE LINE
-    WAIT_BEGIN_LINE(false),
-    WAIT_END_LINE(false),
+    WAIT_BEGIN_LINE(2),
+    WAIT_END_LINE(3),
     //CASE SQUARE
-    WAIT_BEGIN_SQUARE(false),
-    WAIT_END_SQUARE(false),
+    WAIT_BEGIN_SQUARE(4),
+    WAIT_END_SQUARE(5),
     //CASE RECTANGLE
-    WAIT_BEGIN_RECTANGLE(false),
-    WAIT_END_RECTANGLE(false);
+    WAIT_BEGIN_RECTANGLE(6),
+    WAIT_END_RECTANGLE(7);
 
-    public final boolean active;
+    public final int action;
 
-    DrawEnum(boolean active){
-        this.active = active;
+    DrawEnum(int action){
+        this.action = action;
     }
 
-    public boolean getActiveValue(){
-        return active;
+    public int getActionValue(){
+        return action;
     }
+    
 
-    public void setActiveValue(boolean active){
-        this.active = active;
+    public static DrawEnum getAction(int action){
+        for(DrawEnum drwEnum : DrawEnum.values()){
+            if(action == drwEnum.getActionValue()){
+                return drwEnum;
+            }
+        }
+        return null;
     }
     
 }

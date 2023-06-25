@@ -50,6 +50,8 @@ public class Point extends Figure{
         return super.toString() + "x: " + x + ", y: " + y + "\n";
     }
 
+    public void calculateDimensions() {}; //abstract method implementation
+
     //Draw a minuscle circle(point)
     @Override
     public void draw(Graphics g, Color c){

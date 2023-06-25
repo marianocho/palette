@@ -29,5 +29,6 @@ public abstract class Figure{
     }
 
     //Draw the figure
-    public void draw(Graphics g, Color c){};
+    public abstract void draw(Graphics g, Color c);
+    public abstract void calculateDimensions();
 }

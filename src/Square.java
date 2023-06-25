@@ -51,19 +51,26 @@ public class Square extends Figure {
     }
 
     // Calculate the dimension of the square
-    private void calculateDimensions() {
+    public void calculateDimensions() {
         int deltaX, deltaY;
 
         // calculating deltaX
         deltaX = p1.getX() - p2.getX();
-        if (deltaX < 0) {
-            deltaX = -1 * deltaX; // module
-        }
 
         // calculating deltaY
         deltaY = p1.getY() - p2.getY();
-        if (deltaY < 0) {
-            deltaY = -1 * deltaY; // module
+
+        if (deltaX < 0 && deltaY > 0) {
+            this.p1.setY(this.p2.getY());
+            deltaX = -deltaX;
+        } else if (deltaX > 0 && deltaY > 0) {
+            this.setP1(this.p2.getX(), this.p2.getY());
+        } else if (deltaX > 0 && deltaY < 0) {
+            this.p1.setX(this.p2.getX());
+            deltaY = -deltaY;
+        } else if (deltaX < 0 && deltaY < 0) {
+            deltaX = -deltaX;
+            deltaY = -deltaY;
         }
 
         if (deltaX == deltaY) { // if deltas are the same, it doesn't matter

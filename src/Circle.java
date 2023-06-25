@@ -60,28 +60,36 @@ public class Circle extends Figure {
     }
 
     //Calculate the dimensions of the circle
-    private void calculateDimensions()
+    public void calculateDimensions()
     {
         int deltaX, deltaY;
-        
-        //calculating deltaX
-        deltaX = this.p1.getX() - this.p2.getX();
-        if(deltaX < 0) {
-            deltaX = -deltaX; //modulo
-        }
-        //calculating deltaX
-        deltaY = this.p1.getY() - this.p2.getY();
-        if(deltaY < 0) {
+
+        // calculating deltaX
+        deltaX = p1.getX() - p2.getX();
+
+        // calculating deltaY
+        deltaY = p1.getY() - p2.getY();
+
+        if (deltaX < 0 && deltaY > 0) {
+            this.p1.setY(this.p2.getY());
+            deltaX = -deltaX;
+        } else if (deltaX > 0 && deltaY > 0) {
+            this.setP1(this.p2.getX(), this.p2.getY());
+        } else if (deltaX > 0 && deltaY < 0) {
+            this.p1.setX(this.p2.getX());
+            deltaY = -deltaY;
+        } else if (deltaX < 0 && deltaY < 0) {
+            deltaX = -deltaX;
             deltaY = -deltaY;
         }
-        if(deltaX >= deltaY) //check which delta is bigger
-        {
-            this.diameter = deltaX;                              
-                                                                
-        }
-        else 
-        {
-            this.diameter = deltaY; 
+
+        if (deltaX == deltaY) { // if deltas are the same, it doesn't matter
+            this.diameter = deltaX;
+        } else { // if the deltas are different, calculate the mean value of them and use it as
+                 // the size
+            double averageDouble = (deltaX + deltaY) / 2;
+            int averageInt = (int) averageDouble;
+            this.diameter = averageInt;
         }
     }
 

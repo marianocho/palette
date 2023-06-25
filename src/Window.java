@@ -36,8 +36,7 @@ public class Window extends JFrame {
     private JLabel statusBar1 = new JLabel("Message:"),
                    statusBar2 = new JLabel("Coordinates:");
 
-    /*private boolean waitPoint, waitBeginLine, waitEndLine,waitBeginSquare, waitEndSquare,
-            waitBeginRectangle, waitEndRectangle, waitBeginCircle, waitEndCircle, waitBeginEllipse, waitEndEllipse;*/
+
 
     private Color colorOut = Color.BLACK;
 
@@ -159,71 +158,29 @@ public class Window extends JFrame {
                     figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
                     statusBar1.setText("Message:");
                     break;
-            }
-            /*if (waitPoint) {
-                figures.add(new Point(e.getX(), e.getY(), colorOut));
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-            } else if (waitBeginLine) {
-                p1 = new Point(e.getX(), e.getY(), colorOut);
-                waitBeginLine = false;
-                waitEndLine = true;
-                statusBar1.setText("Message: set the line final point");
-            } else if (waitEndLine) {
-                waitBeginLine = true;
-                waitEndLine = false;
-                figures.add(new Line(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                statusBar1.setText("Message:");
-            } else if (waitBeginSquare) {
-                p1 = new Point(e.getX(), e.getY(), colorOut);
-                waitBeginSquare = false;
-                waitEndSquare = true;
-                statusBar1.setText("Message: set the square side");
-            } else if (waitEndSquare) {
-                waitEndSquare = false;
-                waitBeginSquare = true;
-                figures.add(new Square(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                statusBar1.setText("Message:");
-            } else if (waitBeginRectangle) {
-                p1 = new Point(e.getX(), e.getY(), colorOut);
-                waitBeginRectangle = false;
-                waitEndRectangle = true;
-                statusBar1.setText("Message: set the rectangle side");
-            } else if (waitEndRectangle) {
-                waitEndRectangle = false;
-                waitBeginRectangle = true;
-                figures.add(new Rectangle(new Point(p1.getX(), p1.getY()), // first Point
-                        new Point(e.getX(), e.getY()), // width
-                        colorOut));
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                statusBar1.setText("Message:");
-            } else if(waitBeginCircle) {
+                case WAIT_BEGIN_CIRCLE:
                     p1 = new Point (e.getX(), e.getY(), colorOut);
-                    waitBeginCircle = false;
-                    waitEndCircle = true;
-                    statusBar1.setText("Mensagem: set the circle border point"); 
-            } else if(waitEndCircle) {
-                waitEndCircle = false;
-                waitBeginCircle = true;
-                figures.add(new Circle(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                statusBar1.setText("Message:");
-          
-            } else if(waitBeginEllipse) {
-                p1 = new Point (e.getX(), e.getY(), colorOut);
-                waitBeginEllipse = false;
-                waitEndEllipse = true;
-                statusBar1.setText("Message: set the ellipse border"); 
-            
-            } else if(waitEndEllipse) {
-                waitEndEllipse = false;
-                waitBeginEllipse = true;
-                figures.add(new Ellipse(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut)); 
-                figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
-                statusBar1.setText("Message:");
-            }*/
-
+                    statusBar1.setText("Mensagem: set the circle border point");
+                    action = DrawEnum.WAIT_END_CIRCLE; 
+                    break;
+                case WAIT_END_CIRCLE:
+                    figures.add(new Circle(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                    statusBar1.setText("Message:");
+                    action = DrawEnum.WAIT_BEGIN_CIRCLE;
+                    break;
+                case WAIT_BEGIN_ELLIPSE:
+                    p1 = new Point (e.getX(), e.getY(), colorOut);
+                    statusBar1.setText("Message: set the ellipse border"); 
+                    action = DrawEnum.WAIT_END_ELLIPSE;
+                    break;
+                case WAIT_END_ELLIPSE:
+                    figures.add(new Ellipse(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut)); 
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
+                    statusBar1.setText("Message:");
+                    action = DrawEnum.WAIT_BEGIN_ELLIPSE;
+                    break;
+                }
         }
 
         public void mouseReleased(MouseEvent e) {
@@ -280,26 +237,14 @@ public class Window extends JFrame {
 
     protected class DrawingCircle implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = false;
-            waitBeginLine = false;
-            waitEndLine = false;
-            waitBeginCircle = true;
-            waitEndCircle = false;
-            
+            action = DrawEnum.WAIT_BEGIN_CIRCLE;
             statusBar1.setText("Message: set the circle initial point");
         }
     }
 
     protected class DrawingEllipse implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            waitPoint = false;
-            waitBeginLine = false;
-            waitEndLine = false;
-            waitBeginCircle = false;
-            waitEndCircle = false;
-            waitBeginEllipse = true;
-            waitEndEllipse = false;
-            
+            action = DrawEnum.WAIT_BEGIN_ELLIPSE;
             statusBar1.setText("Message: set the ellipse initial point");
         }
     }

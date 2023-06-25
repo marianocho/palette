@@ -9,7 +9,14 @@ public enum DrawEnum{
     WAIT_END_SQUARE(5),
     //CASE RECTANGLE
     WAIT_BEGIN_RECTANGLE(6),
-    WAIT_END_RECTANGLE(7);
+    WAIT_END_RECTANGLE(7),
+    //CASE CIRCLE
+    WAIT_BEGIN_CIRCLE(8),
+    WAIT_END_CIRCLE(9),
+    //CASE ELLIPSE
+    WAIT_BEGIN_ELLIPSE(10),
+    WAIT_END_ELLIPSE(11);
+
 
     public final int action;
 

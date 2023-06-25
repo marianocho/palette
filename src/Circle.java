@@ -12,8 +12,8 @@ public class Circle extends Figure {
     }
 
     //Constructor with a pre-selected color
-    public Circle(Point p1, Point p2, Color cor) {
-        super(cor);
+    public Circle(Point p1, Point p2, Color color) {
+        super(color);
         this.p1 = p1;
         this.p2 = p2;
     }

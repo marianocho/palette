@@ -3,8 +3,7 @@ import java.awt.*;
 public class Ellipse extends Figure {
     Point p1, p2, p3;
     int height = 0, width = 0;
-    Color color;
-
+    
     //DEfault constructor
     public Ellipse(Point p1, Point p2)
     {
@@ -93,8 +92,8 @@ public class Ellipse extends Figure {
         }
     }
     public void draw(Graphics g,Color c) {
+        calculateDimensions(); 
         g.setColor(this.color);
-        calculateDimensions();  
         g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 
         g.setColor(c);//set color to fill in the ellipse
         g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);

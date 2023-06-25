@@ -56,9 +56,17 @@ public class Point extends Figure{
     @Override
     public void draw(Graphics g, Color c){
         g.setColor(c); //contour color
+        colorOut = c;
         g.drawOval(x, y, 5, 5);
         g.setColor(c); //contour color
+        colorIn = c;
         g.fillOval(x, y, 5, 5);
+    }
 
+    public void draw(Graphics g) {
+        g.setColor(this.colorOut); //contour color
+        g.drawOval(x, y, 5, 5);
+        g.setColor(this.colorIn); //contour color
+        g.fillOval(x, y, 5, 5);
     }
 }

@@ -16,10 +16,10 @@ public class Window extends JFrame {
                                            new DrawingEllipse(),
                                            new DrawingSquare(),
                                            new DrawingRectangle(),
-                                           new colorOut(),
-                                           new colorIn(),
-                                           null,
-                                           null
+                                           new ColorOut(),
+                                           new ColorIn(),
+                                           new OpenDrawing(),
+                                           new NewSave()
     };
 
     private MeuJPanel pnlDrawing = new MeuJPanel();
@@ -67,8 +67,47 @@ public class Window extends JFrame {
 
         this.addWindowListener(new CloseWindow());
 
+        IOSave.readArchive();
+
         this.setSize (1200,600);
         this.setVisible (true);
+    }
+
+    public void openDraw(String creator, String drawingName) {
+        Save save = IOSave.getSave(new Save(creator, drawingName, null));
+        
+        if (save != null) {
+            figures.removeAllElements();
+            figures = save.getFigures();
+            pnlDrawing.removeAll();
+            
+            for (Figure figure : save.getFigures())
+                figure.draw(getGraphics());
+
+            JOptionPane.showMessageDialog(null, "Your drawning has been opened!", 
+                                            "Opened Drawing", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else 
+            JOptionPane.showMessageDialog(null, "An unexpected error occurred", 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+
+    }
+
+    public void saveNewDraw(String creator, String drawingName) {
+        if (figures.size() == 0) {
+            JOptionPane.showMessageDialog(null, "Add any drawing before to save", 
+                                          "Drawing not found", JOptionPane.ERROR_MESSAGE);
+
+            return;
+        }
+
+        if (IOSave.saveNewDrawing(new Save(creator, drawingName, figures))) 
+            JOptionPane.showMessageDialog(null, "Your drawning has been saved!", 
+                                         "Saved Drawing", JOptionPane.INFORMATION_MESSAGE);
+        else 
+            JOptionPane.showMessageDialog(null, "An unexpected error occurred", 
+                                         "Error", JOptionPane.ERROR_MESSAGE);
+
     }
 
     private void initializeButtons() {
@@ -284,7 +323,7 @@ public class Window extends JFrame {
     }
 
     
-    protected class colorOut implements ActionListener {
+    protected class ColorOut implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
             try {
@@ -298,7 +337,7 @@ public class Window extends JFrame {
         }
     }
 
-    protected class colorIn implements ActionListener {
+    protected class ColorIn implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
             try {
@@ -315,19 +354,20 @@ public class Window extends JFrame {
 
     protected class NewSave implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+            new SaveWindow(Window.this);
         }
     }
 
-    protected class AbrirDrawing implements ActionListener {
+    protected class OpenDrawing implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+            new OpenWindow(Window.this);
         }
     }
 
     protected class CloseWindow extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
+            IOSave.writeArchive();
             System.exit(0);
         }
     }

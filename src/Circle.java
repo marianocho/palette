@@ -18,6 +18,12 @@ public class Circle extends Figure {
         this.p2 = p2;
     }
 
+    public Circle(Point p1, int diameter, Color colorOut, Color colorIn) {
+        super(colorOut, colorIn);
+        this.p1 = p1;
+        this.diameter = diameter;
+    }
+
     //Getters
     public Point getP1()
     {
@@ -48,15 +54,6 @@ public class Circle extends Figure {
 
     public void setDiameter(int diameter){
         this.diameter = diameter;
-    }
-    
-    //toString
-    @Override
-    public String toString() {
-        return  super.toString() + 
-                "p1: " + p1 + "\n" + 
-                "p2: " + p2 + "\n" +
-                "diameter: " + diameter;
     }
 
     //Calculate the dimensions of the circle
@@ -96,11 +93,22 @@ public class Circle extends Figure {
     //Draw the circle
     @Override
     public void draw(Graphics g, Color fc){
-        g.setColor(this.color); //border color
+        g.setColor(this.colorOut); //border color
         calculateDimensions();
         g.drawOval(p1.getX(), p1.getY(), //start point
                    diameter, diameter);
         g.setColor(fc); //filling color
+        colorIn = fc;
+        g.fillOval(p1.getX()+1, p1.getY()+1, //adding  1 to starting point to avoid overdrawing
+                   diameter-1, diameter-1);
+    }
+
+    @Override
+    public void draw(Graphics g){
+        g.setColor(this.colorOut); //border color
+        g.drawOval(p1.getX(), p1.getY(), //start point
+                   diameter, diameter);
+        g.setColor(this.colorIn); //filling color
         g.fillOval(p1.getX()+1, p1.getY()+1, //adding  1 to starting point to avoid overdrawing
                    diameter-1, diameter-1);
     }

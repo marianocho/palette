@@ -17,7 +17,13 @@ public class Ellipse extends Figure {
         super(color);
         this.p1 = p1;
         this.p2 = p2;
-        
+    }
+
+    public Ellipse(Point p1, int height, int width, Color colorOut, Color colorIn) {
+        super(colorOut, colorIn);
+        this.p1 = p1;
+        this.width = width;
+        this.height = height;
     }
     
     //Getters
@@ -57,17 +63,6 @@ public class Ellipse extends Figure {
     public void setWidth(int width) {
         this.width = width;
     }
-
-    //toString
-    @Override
-    public String toString() {
-        return  super.toString() + 
-                "p1: " + p1 + "\n" + 
-                "p2: " + p2 + "\n" +
-                "height: " + height + "\n" +
-                "width: " + width + "\n" +
-                "color: " + color;   
-        }
    
     public void calculateDimensions() {
         int deltaX, deltaY;
@@ -95,11 +90,20 @@ public class Ellipse extends Figure {
             this.width = -deltaX;
         }
     }
+
     public void draw(Graphics g,Color c) {
         calculateDimensions(); 
-        g.setColor(this.color);
+        g.setColor(this.getColor());
         g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 
         g.setColor(c);//set color to fill in the ellipse
+        colorIn = c;
+        g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(this.colorOut);
+        g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 
+        g.setColor(this.colorIn);//set color to fill in the ellipse
         g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);
     }
 }

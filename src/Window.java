@@ -7,16 +7,7 @@ import java.util.*;
 public class Window extends JFrame {
 
     //Interactive buttons (menu)
-    private JButton[] buttons = {   new JButton(Constants.figureNames[0]), 
-                                    new JButton(Constants.figureNames[1]), 
-                                    new JButton(Constants.figureNames[2]), 
-                                    new JButton(Constants.figureNames[3]), 
-                                    new JButton(Constants.figureNames[4]), 
-                                    new JButton(Constants.figureNames[5]), 
-                                    new JButton(Constants.figureNames[6]), 
-                                    new JButton(Constants.figureNames[7]), 
-                                    new JButton(Constants.figureNames[8]), 
-                                    new JButton(Constants.figureNames[9])};
+    private JButton[] buttons = new JButton[Constants.NUMBER_OF_BUTTONS];
 
     //Buttons actions
     private ActionListener[] functions = { new DrawingPoint(), 
@@ -73,8 +64,8 @@ public class Window extends JFrame {
         cntForm.add (pnlButtons,  BorderLayout.NORTH);
         cntForm.add (pnlDrawing, BorderLayout.CENTER);
         cntForm.add (pnlStatus,  BorderLayout.SOUTH);
-        
-        this.addWindowListener (new FechamentoJanela());
+
+        this.addWindowListener(new CloseWindow());
 
         this.setSize (1200,600);
         this.setVisible (true);
@@ -82,20 +73,18 @@ public class Window extends JFrame {
 
     private void initializeButtons() {
         for (int i = 0; i < buttons.length; i++) {
+            ImageIcon image = null;
             try {
-                if (Constants.figureNames[i].equals("Outside") || Constants.figureNames[i].equals("Inside")) {
-                    Image image = ImageIO.read(getClass().getResource("resources/Colors.jpg"));
-                    buttons[i].setIcon(new ImageIcon(image));
-                } else {
-                    Image image = ImageIO.read(getClass().getResource("resources/" + Constants.figureNames[i] + ".jpg"));
-                    buttons[i].setIcon(new ImageIcon(image));
-                }
+                if (Constants.figureNames[i].equals("Outside") || Constants.figureNames[i].equals("Inside")) 
+                    image = new ImageIcon(ImageIO.read(getClass().getResource("resources/Colors.jpg")));
+                else 
+                    image = new ImageIcon(ImageIO.read(getClass().getResource("resources/" + Constants.figureNames[i] + ".jpg")));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, 
                                               "Open image " + Constants.figureNames[i] + " error" , 
                                               "File not found", JOptionPane.WARNING_MESSAGE);
             }
-
+            buttons[i] = new JButton(Constants.figureNames[i], image);
             buttons[i].addActionListener(functions[i]);
         }
     }
@@ -105,9 +94,10 @@ public class Window extends JFrame {
             panel.add(button);
     }
 
-    protected class MeuJPanel extends JPanel
-            implements MouseListener,
-            MouseMotionListener {
+    private class MeuJPanel extends JPanel
+                            implements MouseListener,
+                                       MouseMotionListener 
+    {
 
         public MeuJPanel() {
             super();
@@ -119,66 +109,37 @@ public class Window extends JFrame {
         public void mousePressed(MouseEvent e) {
             switch(action){
                 case WAIT_POINT:
-                    figures.add(new Point(e.getX(), e.getY(), colorOut));
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                    action = DrawEnum.WAIT_POINT;
+                    newPoint(e);
                     break;
                 case WAIT_BEGIN_LINE:
-                    p1 = new Point(e.getX(), e.getY(), colorOut);
-                    action = DrawEnum.WAIT_END_LINE;
-                    statusBar1.setText("Message: set the line final point");
+                    beginNewLine(e);
                     break;
                 case WAIT_END_LINE:
-                    action = DrawEnum.WAIT_BEGIN_LINE;
-                    figures.add(new Line(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                    statusBar1.setText("Message:");
+                    endNewLine(e);
                     break;
                 case WAIT_BEGIN_SQUARE:
-                    p1 = new Point(e.getX(), e.getY(), colorOut);
-                    action = DrawEnum.WAIT_END_SQUARE;
-                    statusBar1.setText("Message: set the square side");
+                    beginNewSquare(e);
                     break;    
                 case WAIT_END_SQUARE:
-                    action = DrawEnum.WAIT_BEGIN_SQUARE;
-                    figures.add(new Square(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                    statusBar1.setText("Message:");
+                    endNewSquare(e);
                     break;
                 case WAIT_BEGIN_RECTANGLE:
-                    p1 = new Point(e.getX(), e.getY(), colorOut);
-                    action = DrawEnum.WAIT_END_RECTANGLE;
-                    statusBar1.setText("Message: set the rectangle side");
+                    beginNewRectangle(e);
                     break;
                 case WAIT_END_RECTANGLE:
-                    action = DrawEnum.WAIT_BEGIN_RECTANGLE;
-                    figures.add(new Rectangle(new Point(p1.getX(), p1.getY()), // first Point
-                                new Point(e.getX(), e.getY()), // width
-                                colorOut));
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                    statusBar1.setText("Message:");
+                    endNewRectangle(e);
                     break;
                 case WAIT_BEGIN_CIRCLE:
-                    p1 = new Point (e.getX(), e.getY(), colorOut);
-                    statusBar1.setText("Mensagem: set the circle border point");
-                    action = DrawEnum.WAIT_END_CIRCLE; 
+                    beginNewCircle(e);
                     break;
                 case WAIT_END_CIRCLE:
-                    figures.add(new Circle(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
-                    statusBar1.setText("Message:");
-                    action = DrawEnum.WAIT_BEGIN_CIRCLE;
+                    endNewCircle(e);
                     break;
                 case WAIT_BEGIN_ELLIPSE:
-                    p1 = new Point (e.getX(), e.getY(), colorOut);
-                    statusBar1.setText("Message: set the ellipse border"); 
-                    action = DrawEnum.WAIT_END_ELLIPSE;
+                    beginNewEllipse(e);
                     break;
                 case WAIT_END_ELLIPSE:
-                    figures.add(new Ellipse(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut)); 
-                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
-                    statusBar1.setText("Message:");
-                    action = DrawEnum.WAIT_BEGIN_ELLIPSE;
+                    endNewEllipse(e);
                     break;
                 }
         }
@@ -200,6 +161,79 @@ public class Window extends JFrame {
 
         public void mouseMoved(MouseEvent e) {
             statusBar2.setText("Coordinates: " + e.getX() + "," + e.getY());
+        }
+
+        private void newPoint(MouseEvent e) {
+            figures.add(new Point(e.getX(), e.getY(), colorOut));
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+            action = DrawEnum.WAIT_POINT;
+        }
+
+        private void beginNewLine(MouseEvent e) {
+            p1 = new Point(e.getX(), e.getY(), colorOut);
+            action = DrawEnum.WAIT_END_LINE;
+            statusBar1.setText("Message: set the line final point");
+        }
+
+        private void endNewLine(MouseEvent e) {
+            action = DrawEnum.WAIT_BEGIN_LINE;
+            figures.add(new Line(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+            statusBar1.setText("Message: set the line initial point");
+        }
+
+        private void beginNewSquare(MouseEvent e) {
+            p1 = new Point(e.getX(), e.getY(), colorOut);
+            action = DrawEnum.WAIT_END_SQUARE;
+            statusBar1.setText("Message: set the square side");
+        }
+
+        private void endNewSquare(MouseEvent e) {
+            action = DrawEnum.WAIT_BEGIN_SQUARE;
+            figures.add(new Square(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+            statusBar1.setText("Message: set the square intial point");
+        }
+
+        private void beginNewRectangle(MouseEvent e) {
+            p1 = new Point(e.getX(), e.getY(), colorOut);
+            action = DrawEnum.WAIT_END_RECTANGLE;
+            statusBar1.setText("Message: set the rectangle side");
+        }
+
+        private void endNewRectangle(MouseEvent e) {
+            action = DrawEnum.WAIT_BEGIN_RECTANGLE;
+            figures.add(new Rectangle(new Point(p1.getX(), p1.getY()), // first Point
+                        new Point(e.getX(), e.getY()), // width
+                        colorOut));
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+            statusBar1.setText("Message: set the rectangle initial point");
+        }
+
+        private void beginNewCircle(MouseEvent e) {
+            p1 = new Point (e.getX(), e.getY(), colorOut);
+            statusBar1.setText("Mensagem: set the circle border point");
+            action = DrawEnum.WAIT_END_CIRCLE; 
+        }
+
+        private void endNewCircle(MouseEvent e) {
+            action = DrawEnum.WAIT_BEGIN_CIRCLE;
+            figures.add(new Circle(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut));
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+            statusBar1.setText("Message: set the circle initial point");
+        }
+
+        private void beginNewEllipse(MouseEvent e) {
+            p1 = new Point (e.getX(), e.getY(), colorOut);
+            statusBar1.setText("Message: set the ellipse border"); 
+            action = DrawEnum.WAIT_END_ELLIPSE;
+        }
+
+        private void endNewEllipse(MouseEvent e) {
+            action = DrawEnum.WAIT_BEGIN_ELLIPSE;
+            figures.add(new Ellipse(new Point(p1.getX(), p1.getY()), new Point(e.getX(), e.getY()), colorOut)); 
+            figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
+            statusBar1.setText("Message: set the ellipse initial point");
         }
     }
 
@@ -279,7 +313,7 @@ public class Window extends JFrame {
         }
     }
 
-    protected class NovoSalvamento implements ActionListener {
+    protected class NewSave implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
         }
@@ -291,7 +325,8 @@ public class Window extends JFrame {
         }
     }
 
-    protected class FechamentoJanela extends WindowAdapter {
+    protected class CloseWindow extends WindowAdapter {
+        @Override
         public void windowClosing(WindowEvent e) {
             System.exit(0);
         }

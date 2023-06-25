@@ -42,6 +42,8 @@ public class Line extends Figure{
         return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n";
     }
 
+    public void calculateDimensions() {} //abastract method implementation
+
     //Draw the line
     @Override
     public void draw(Graphics g, Color color){

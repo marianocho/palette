@@ -69,26 +69,30 @@ public class Ellipse extends Figure {
                 "color: " + color;   
         }
    
-    private void calculateDimensions() {
+    public void calculateDimensions() {
         int deltaX, deltaY;
-        
-        //calculate deltaX
-        deltaX = this.p1.getX() - this.p2.getX(); 
-        if(deltaX < 0)
-            deltaX = -deltaX; //module
-        
-        //calculate deltaY
-        deltaY = this.p1.getY() - this.p2.getY(); 
-        if(deltaY < 0)
-            deltaY = -deltaY; //module
 
-        if(deltaX >= deltaY) { //check which delta is bigger
-            this.width = deltaX;
+        //calculating deltaX
+        deltaX = p1.getX() - p2.getX();
+
+        //calculating deltaY
+        deltaY = p1.getY() - p2.getY();
+
+        if (deltaX < 0 && deltaY > 0) {
+            this.p1.setY(this.p2.getY());
             this.height = deltaY;
-        }
-        else {
-            this.width = deltaY;
-            this.height = deltaX;
+            this.width = -deltaX;
+        } else if (deltaX > 0 && deltaY > 0) {
+            this.setP1(this.p2.getX(), this.p2.getY());
+            this.height = deltaY;
+            this.width = deltaX;
+        } else if (deltaX > 0 && deltaY < 0) {
+            this.p1.setX(this.p2.getX());
+            this.height = -deltaY;
+            this.width = deltaX;
+        } else if (deltaX < 0 && deltaY < 0) {
+            this.height = -deltaY;
+            this.width = -deltaX;
         }
     }
     public void draw(Graphics g,Color c) {
@@ -98,5 +102,4 @@ public class Ellipse extends Figure {
         g.setColor(c);//set color to fill in the ellipse
         g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);
     }
-        
 }

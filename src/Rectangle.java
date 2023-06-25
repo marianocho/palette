@@ -64,18 +64,26 @@ public class Rectangle extends Figure{
 
         //calculating deltaX
         deltaX = p1.getX() - p2.getX();
-        if(deltaX < 0){
-            deltaX = -1*deltaX; //module
-        }
 
         //calculating deltaY
         deltaY = p1.getY() - p2.getY();
-        if(deltaY < 0){
-            deltaY = -1*deltaY; //module
-        }
 
-        this.height = deltaY;
-        this.width = deltaX;
+        if (deltaX < 0 && deltaY > 0) {
+            this.p1.setY(this.p2.getY());
+            this.height = deltaY;
+            this.width = -deltaX;
+        } else if (deltaX > 0 && deltaY > 0) {
+            this.setP1(this.p2.getX(), this.p2.getY());
+            this.height = deltaY;
+            this.width = deltaX;
+        } else if (deltaX > 0 && deltaY < 0) {
+            this.p1.setX(this.p2.getX());
+            this.height = -deltaY;
+            this.width = deltaX;
+        } else if (deltaX < 0 && deltaY < 0) {
+            this.height = -deltaY;
+            this.width = -deltaX;
+        }
     }
 
     //Draw the rectangle

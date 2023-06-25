@@ -2,7 +2,6 @@ import java.awt.*;
 
 public class Point extends Figure{
     private int x, y; //coordinates of the point, we use this to localize the point and create lines/figures
-    private int diameter = 2; //the point is a minuscle circle, we ONLY use this to draw the point
 
     //Default constructor
     public Point(int x, int y){
@@ -27,10 +26,6 @@ public class Point extends Figure{
         return y;
     }
 
-    public int getDiameter(){
-        return diameter;
-    }
-
     //Setters
     public void setX(int x){
         this.x = x;
@@ -38,10 +33,6 @@ public class Point extends Figure{
 
     public void setY(int y){
         this.y = y;
-    }
-
-    public void setDiameter(int diameter){
-        this.diameter = diameter;
     }
 
     //toString
@@ -56,9 +47,9 @@ public class Point extends Figure{
     @Override
     public void draw(Graphics g, Color c){
         g.setColor(c); //contour color
-        g.drawOval(x, y, 5, 5);
+        g.drawOval(x, y, 3, 3);
         g.setColor(c); //contour color
-        g.fillOval(x, y, 5, 5);
+        g.fillOval(x, y, 3, 3);
 
     }
 }

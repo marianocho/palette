@@ -10,7 +10,8 @@ public class Window extends JFrame {
     private JButton[] buttons = new JButton[Constants.NUMBER_OF_BUTTONS];
 
     //Buttons actions
-    private ActionListener[] functions = { new DrawingPoint(), 
+    private ActionListener[] functions = { new DrawnigPencil(),
+                                           new DrawingPoint(), 
                                            new DrawingLine (),
                                            new DrawingCircle(),
                                            new DrawingEllipse(),
@@ -18,6 +19,7 @@ public class Window extends JFrame {
                                            new DrawingRectangle(),
                                            new ColorOut(),
                                            new ColorIn(),
+                                           new ClearAll(),
                                            new OpenDrawing(),
                                            new NewSave()
     };
@@ -37,7 +39,7 @@ public class Window extends JFrame {
 
     private Vector<Figure> figures = new Vector<Figure>();
 
-    DrawEnum action;
+    private DrawEnum action;
 
     public Window () { //constructor of Window 
         super("Pallete");
@@ -49,13 +51,11 @@ public class Window extends JFrame {
         pnlButtons.setLayout (flwButtons);
         pnlButtons.setBackground(Color.LIGHT_GRAY);
         initializeButtons();
-
         addButtonsToPanel(pnlButtons);
 
         JPanel     pnlStatus = new JPanel();
         GridLayout grdStatus = new GridLayout(1,2);
         pnlStatus.setLayout(grdStatus);
-
         pnlStatus.add(statusBar1);
         pnlStatus.add(statusBar2);
 
@@ -77,9 +77,9 @@ public class Window extends JFrame {
         Save save = IOSave.getSave(new Save(creator, drawingName, null));
         
         if (save != null) {
+            repaint();
             figures.removeAllElements();
             figures = save.getFigures();
-            pnlDrawing.removeAll();
             
             for (Figure figure : save.getFigures())
                 figure.draw(getGraphics());
@@ -137,6 +137,7 @@ public class Window extends JFrame {
                             implements MouseListener,
                                        MouseMotionListener 
     {
+        Vector<Point> points = new Vector<>();
 
         public MeuJPanel() {
             super();
@@ -180,10 +181,19 @@ public class Window extends JFrame {
                 case WAIT_END_ELLIPSE:
                     endNewEllipse(e);
                     break;
+                case WAIT_PENCIL:
+                    beginNewPencil(); 
+                    break;
                 }
         }
 
         public void mouseReleased(MouseEvent e) {
+            if (action == DrawEnum.WAIT_PENCIL) {
+                for (int j = 1; j < points.size(); j++) {
+                    figures.add(new Line(points.get(j-1), points.get(j), colorOut));
+                    figures.get(figures.size() - 1).draw(getGraphics(), colorIn);
+                }
+            }
         }
 
         public void mouseClicked(MouseEvent e) {
@@ -196,6 +206,9 @@ public class Window extends JFrame {
         }
 
         public void mouseDragged(MouseEvent e) {
+            if (action == DrawEnum.WAIT_PENCIL) {
+                points.add(new Point(e.getX(), e.getY()));
+            }
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -274,6 +287,19 @@ public class Window extends JFrame {
             figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
             statusBar1.setText("Message: set the ellipse initial point");
         }
+
+        private void beginNewPencil() {
+            points.removeAllElements();
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        }
+    }
+
+    protected class DrawnigPencil implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            action = DrawEnum.WAIT_PENCIL;
+
+            statusBar1.setText("Message: use your pencil");
+        } 
     }
 
     protected class DrawingPoint implements ActionListener {
@@ -321,11 +347,9 @@ public class Window extends JFrame {
             statusBar1.setText("Message: set the ellipse initial point");
         }
     }
-
     
     protected class ColorOut implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             try {
                 colorOut = JColorChooser.showDialog(Window.this,
                         "Choose a color", colorOut);
@@ -339,7 +363,6 @@ public class Window extends JFrame {
 
     protected class ColorIn implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             try {
                 colorIn = JColorChooser.showDialog(Window.this,
                         "Choose a color", colorIn);
@@ -349,6 +372,13 @@ public class Window extends JFrame {
                 System.out.println(ex.getMessage());
             }
 
+        }
+    }
+
+    protected class ClearAll implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            repaint();
+            figures.removeAllElements();
         }
     }
 

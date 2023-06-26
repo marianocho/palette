@@ -15,7 +15,9 @@ public enum DrawEnum{
     WAIT_END_CIRCLE(9),
     //CASE ELLIPSE
     WAIT_BEGIN_ELLIPSE(10),
-    WAIT_END_ELLIPSE(11);
+    WAIT_END_ELLIPSE(11),
+    //CASE PENCIL
+    WAIT_PENCIL(12);
 
 
     public final int action;

@@ -29,11 +29,11 @@ public class Line extends Figure{
 
     //Setters
     public void setP1(int x, int y){
-        this.p1 = new Point(x, y, this.color);
+        this.p1 = new Point(x, y, this.colorOut);
     }
 
     public void setP2(int x, int y){
-        this.p2 = new Point(x, y, this.color);
+        this.p2 = new Point(x, y, this.colorOut);
     }
 
     //toString
@@ -47,7 +47,15 @@ public class Line extends Figure{
     //Draw the line
     @Override
     public void draw(Graphics g, Color color){
-        g.setColor(this.color); //defining the color of the drawing
+        g.setColor(this.colorOut); //defining the color of the drawing
+        g.drawLine(p1.getX(), p1.getY(), //point 1
+                   p2.getX(), p2.getY()  //point 2
+                   );
+    }
+
+    @Override
+    public void draw(Graphics g){
+        g.setColor(this.colorOut); //defining the color of the drawing
         g.drawLine(p1.getX(), p1.getY(), //point 1
                    p2.getX(), p2.getY()  //point 2
                    );

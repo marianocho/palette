@@ -18,6 +18,13 @@ public class Rectangle extends Figure{
         this.p2 = p2;
     }
 
+    public Rectangle(Point p1, int height, int width, Color colorOut, Color colorIn){
+        super(colorOut, colorIn);
+        this.p1 = p1;
+        this.height = height;
+        this.width = width;
+    }
+
     //Getters
     public Point getP1(){
         return p1;
@@ -37,11 +44,11 @@ public class Rectangle extends Figure{
 
     //Setters
     public void setP1(int x, int y){
-        this.p1 = new Point(x, y, this.color);
+        this.p1 = new Point(x, y, this.colorOut);
     }
 
     public void setP2(int x, int y){
-        this.p2 = new Point(x, y, this.color);
+        this.p2 = new Point(x, y, this.colorOut);
     }
 
     public void setHeight(int height){
@@ -50,12 +57,6 @@ public class Rectangle extends Figure{
 
     public void setWidth(int width){
         this.width = width;
-    }
-
-    @Override
-    //toString
-    public String toString(){
-        return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n" + "height: " + height + ", width:" + width + "\n";
     }
 
     //Calculate the dimensions of the rectangle
@@ -89,11 +90,22 @@ public class Rectangle extends Figure{
     //Draw the rectangle
     @Override
     public void draw(Graphics g, Color fc){
-        g.setColor(color); //contour color
+        g.setColor(colorOut); //contour color
         calculateDimensions();
         g.drawRect(p1.getX(), p1.getY(), //start point
                    width, height);
         g.setColor(fc); //filling color
+        colorIn = fc;
+        g.fillRect(p1.getX()+1, p1.getY()+1, //same start point
+                   width-1, height-1);
+    }
+
+    @Override
+    public void draw(Graphics g){
+        g.setColor(colorOut); //contour color
+        g.drawRect(p1.getX(), p1.getY(), //start point
+                   width, height);
+        g.setColor(this.colorIn); //filling color
         g.fillRect(p1.getX()+1, p1.getY()+1, //same start point
                    width-1, height-1);
     }

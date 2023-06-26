@@ -18,6 +18,12 @@ public class Square extends Figure {
         this.p2 = p2;
     }
 
+        public Square(Point p1, int dimension, Color colorOut, Color colorIn) {
+        super(colorOut, colorIn);
+        this.p1 = p1;
+        this.dimension = dimension;
+    }
+
     // Getters
     public Point getP1() {
         return p1;
@@ -33,21 +39,15 @@ public class Square extends Figure {
 
     // Setters
     public void setP1(int x, int y) {
-        this.p1 = new Point(x, y, this.color);
+        this.p1 = new Point(x, y, this.colorOut);
     }
 
     public void setP2(int x, int y) {
-        this.p2 = new Point(x, y, this.color);
+        this.p2 = new Point(x, y, this.colorOut);
     }
 
     public void setDimension(int dimension) {
         this.dimension = dimension;
-    }
-
-    @Override
-    // toString
-    public String toString() {
-        return "p1: " + p1 + "\n" + "p2: " + p2 + "\n" + "dimension: " + dimension + "\n";
     }
 
     // Calculate the dimension of the square
@@ -86,11 +86,23 @@ public class Square extends Figure {
     //Draw the square
     @Override
     public void draw(Graphics g, Color fc){
-        g.setColor(color); //contour color
+        g.setColor(colorOut); //contour color
         calculateDimensions();
         g.drawRect(p1.getX(), p1.getY(), //start point 
                    dimension, dimension);
         g.setColor(fc); //filling color
+        colorIn = fc;
+        g.fillRect(p1.getX()+1, p1.getY()+1, //same start point
+                   dimension-1, dimension-1);
+
+    }
+
+    @Override
+    public void draw(Graphics g){
+        g.setColor(colorOut); //contour color
+        g.drawRect(p1.getX(), p1.getY(), //start point 
+                   dimension, dimension);
+        g.setColor(this.colorIn); //filling color
         g.fillRect(p1.getX()+1, p1.getY()+1, //same start point
                    dimension-1, dimension-1);
 

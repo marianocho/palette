@@ -10,16 +10,18 @@ public class Window extends JFrame {
     private JButton[] buttons = new JButton[Constants.NUMBER_OF_BUTTONS];
 
     //Buttons actions
-    private ActionListener[] functions = { new DrawingPoint(), 
+    private ActionListener[] functions = { new DrawnigPencil(),
+                                           new DrawingPoint(), 
                                            new DrawingLine (),
                                            new DrawingCircle(),
                                            new DrawingEllipse(),
                                            new DrawingSquare(),
                                            new DrawingRectangle(),
-                                           new colorOut(),
-                                           new colorIn(),
-                                           null,
-                                           null
+                                           new ColorOut(),
+                                           new ColorIn(),
+                                           new ClearAll(),
+                                           new OpenDrawing(),
+                                           new NewSave()
     };
 
     private MeuJPanel pnlDrawing = new MeuJPanel();
@@ -37,7 +39,7 @@ public class Window extends JFrame {
 
     private Vector<Figure> figures = new Vector<Figure>();
 
-    DrawEnum action;
+    private DrawEnum action;
 
     public Window () { //constructor of Window 
         super("Pallete");
@@ -49,13 +51,11 @@ public class Window extends JFrame {
         pnlButtons.setLayout (flwButtons);
         pnlButtons.setBackground(Color.LIGHT_GRAY);
         initializeButtons();
-
         addButtonsToPanel(pnlButtons);
 
         JPanel     pnlStatus = new JPanel();
         GridLayout grdStatus = new GridLayout(1,2);
         pnlStatus.setLayout(grdStatus);
-
         pnlStatus.add(statusBar1);
         pnlStatus.add(statusBar2);
 
@@ -67,8 +67,46 @@ public class Window extends JFrame {
 
         this.addWindowListener(new CloseWindow());
 
-        this.setSize (1200,600);
+        IOSave.readArchive();
+
+        this.setSize (1400,800);
+        this.setResizable(false);
         this.setVisible (true);
+    }
+
+    public void openDraw(String creator, String drawingName) {
+        Save save = IOSave.getSave(new Save(creator, drawingName, null));
+        cleanPanel();
+
+        if (save != null) {
+            figures.addAll(save.getFigures());
+
+            for (Figure figure : save.getFigures())
+                figure.draw(pnlDrawing.getGraphics());
+
+            JOptionPane.showMessageDialog(null, "Your drawning has been opened!", 
+                                            "Opened Drawing", JOptionPane.INFORMATION_MESSAGE);
+        } else 
+            JOptionPane.showMessageDialog(null, "The creator or name of drawing is not found", 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+
+    }
+
+    public void saveNewDraw(String creator, String drawingName) {
+        if (figures.size() == 0) {
+            JOptionPane.showMessageDialog(null, "Add any drawing before to save", 
+                                          "Drawing not found", JOptionPane.ERROR_MESSAGE);
+
+            return;
+        }
+
+        if (IOSave.saveNewDrawing(new Save(creator, drawingName, figures))) 
+            JOptionPane.showMessageDialog(null, "Your drawning has been saved!", 
+                                         "Saved Drawing", JOptionPane.INFORMATION_MESSAGE);
+        else 
+            JOptionPane.showMessageDialog(null, "An unexpected error occurred", 
+                                         "Error", JOptionPane.ERROR_MESSAGE);
+
     }
 
     private void initializeButtons() {
@@ -94,10 +132,16 @@ public class Window extends JFrame {
             panel.add(button);
     }
 
+    private void cleanPanel() {
+        pnlDrawing.repaint();
+        figures.removeAllElements();
+    }
+
     private class MeuJPanel extends JPanel
                             implements MouseListener,
                                        MouseMotionListener 
     {
+        Vector<Point> points = new Vector<>();
 
         public MeuJPanel() {
             super();
@@ -141,10 +185,19 @@ public class Window extends JFrame {
                 case WAIT_END_ELLIPSE:
                     endNewEllipse(e);
                     break;
+                case WAIT_PENCIL:
+                    beginNewPencil(); 
+                    break;
                 }
         }
 
         public void mouseReleased(MouseEvent e) {
+            if (action == DrawEnum.WAIT_PENCIL) {
+                for (int j = 1; j < points.size(); j++) {
+                    figures.add(new Line(points.get(j-1), points.get(j), colorOut));
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
+                }
+            }
         }
 
         public void mouseClicked(MouseEvent e) {
@@ -157,6 +210,9 @@ public class Window extends JFrame {
         }
 
         public void mouseDragged(MouseEvent e) {
+            if (action == DrawEnum.WAIT_PENCIL) {
+                points.add(new Point(e.getX(), e.getY()));
+            }
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -235,6 +291,19 @@ public class Window extends JFrame {
             figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(),colorIn);
             statusBar1.setText("Message: set the ellipse initial point");
         }
+
+        private void beginNewPencil() {
+            points.removeAllElements();
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        }
+    }
+
+    protected class DrawnigPencil implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            action = DrawEnum.WAIT_PENCIL;
+
+            statusBar1.setText("Message: use your pencil");
+        } 
     }
 
     protected class DrawingPoint implements ActionListener {
@@ -282,11 +351,9 @@ public class Window extends JFrame {
             statusBar1.setText("Message: set the ellipse initial point");
         }
     }
-
     
-    protected class colorOut implements ActionListener {
+    protected class ColorOut implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             try {
                 colorOut = JColorChooser.showDialog(Window.this,
                         "Choose a color", colorOut);
@@ -298,9 +365,8 @@ public class Window extends JFrame {
         }
     }
 
-    protected class colorIn implements ActionListener {
+    protected class ColorIn implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             try {
                 colorIn = JColorChooser.showDialog(Window.this,
                         "Choose a color", colorIn);
@@ -313,21 +379,28 @@ public class Window extends JFrame {
         }
     }
 
-    protected class NewSave implements ActionListener {
+    protected class ClearAll implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+            cleanPanel();
         }
     }
 
-    protected class AbrirDrawing implements ActionListener {
+    protected class NewSave implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            new SaveWindow(Window.this);
+        }
+    }
 
+    protected class OpenDrawing implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            new OpenWindow(Window.this);
         }
     }
 
     protected class CloseWindow extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
+            IOSave.writeArchive();
             System.exit(0);
         }
     }

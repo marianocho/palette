@@ -18,6 +18,7 @@ public class Circle extends Figure {
         this.p2 = p2;
     }
 
+    //Constructor with two pre-selected color
     public Circle(Point p1, int diameter, Color colorOut, Color colorIn) {
         super(colorOut, colorIn);
         this.p1 = p1;
@@ -54,6 +55,11 @@ public class Circle extends Figure {
 
     public void setDiameter(int diameter){
         this.diameter = diameter;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n" + "diameter: " + diameter + "\n";
     }
 
     //Calculate the dimensions of the circle

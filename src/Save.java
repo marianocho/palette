@@ -46,7 +46,7 @@ public class Save {
             if (figure instanceof Point) {
                 Point point = (Point) figure;
 
-                ret += "p," + point.getX() + "," + point.getY() + "," + point.getColor().getRGB() + ",";
+                ret += "p," + point.getX() + "," + point.getY() + "," + point.getColorOut().getRGB() + ",";
             }
 
             if (figure instanceof Line) {
@@ -54,14 +54,14 @@ public class Save {
 
                 ret += "l," + line.getP1().getX() + "," + line.getP1().getY() + "," + 
                               line.getP2().getX() + "," + line.getP2().getY() + "," + 
-                              line.getColor().getRGB() + ",";
+                              line.getColorOut().getRGB() + ",";
             }
 
             if (figure instanceof Square) {
                 Square square = (Square) figure;
 
                 ret += "s," + square.getP1().getX() + "," + square.getP1().getY() + "," + 
-                              square.getDimension() + "," + square.getColor().getRGB() + "," +
+                              square.getDimension() + "," + square.getColorOut().getRGB() + "," +
                               square.getColorIn().getRGB() + ",";
             }
 
@@ -70,14 +70,14 @@ public class Save {
 
                 ret += "r," + rectangle.getP1().getX() + "," + rectangle.getP1().getY() + "," + 
                               rectangle.getHeight() + "," + rectangle.getWidth() + "," + 
-                              rectangle.getColor().getRGB() + "," + rectangle.getColorIn().getRGB() + ",";
+                              rectangle.getColorOut().getRGB() + "," + rectangle.getColorIn().getRGB() + ",";
             }
 
             if (figure instanceof Circle) {
                 Circle circle = (Circle) figure;
 
                 ret += "c," + circle.getP1().getX() + "," + circle.getP1().getY() + "," + 
-                              circle.getDiameter() + "," + circle.getColor().getRGB() + "," +
+                              circle.getDiameter() + "," + circle.getColorOut().getRGB() + "," +
                               circle.getColorIn().getRGB() + ",";
             }
 
@@ -86,7 +86,7 @@ public class Save {
 
                 ret += "e," + ellipse.getP1().getX() + "," + ellipse.getP1().getY() + "," 
                             + ellipse.getHeight() + "," + ellipse.getWidth() + "," +
-                              ellipse.getColor().getRGB() + "," + ellipse.getColorIn().getRGB() + ",";
+                              ellipse.getColorOut().getRGB() + "," + ellipse.getColorIn().getRGB() + ",";
             }
         }
 

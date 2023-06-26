@@ -18,6 +18,7 @@ public class Rectangle extends Figure{
         this.p2 = p2;
     }
 
+    //Constructor with two pre-selected color
     public Rectangle(Point p1, int height, int width, Color colorOut, Color colorIn){
         super(colorOut, colorIn);
         this.p1 = p1;
@@ -57,6 +58,11 @@ public class Rectangle extends Figure{
 
     public void setWidth(int width){
         this.width = width;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n" + "height: " + height + ", width: " + width + "\n";
     }
 
     //Calculate the dimensions of the rectangle

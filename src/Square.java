@@ -17,8 +17,8 @@ public class Square extends Figure {
         this.p1 = p1;
         this.p2 = p2;
     }
-
-        public Square(Point p1, int dimension, Color colorOut, Color colorIn) {
+    // Constructor with two pre-selected color
+    public Square(Point p1, int dimension, Color colorOut, Color colorIn) {
         super(colorOut, colorIn);
         this.p1 = p1;
         this.dimension = dimension;
@@ -48,6 +48,11 @@ public class Square extends Figure {
 
     public void setDimension(int dimension) {
         this.dimension = dimension;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "\n" + "dimension: " + dimension + "\n";
     }
 
     // Calculate the dimension of the square

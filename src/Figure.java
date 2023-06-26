@@ -13,13 +13,14 @@ public abstract class Figure {
         this.colorOut = color;
     }
 
+    //Constructor with two pre-selected color
     public Figure(Color colorOut, Color colorIn){
         this.colorOut = colorOut;
         this.colorIn = colorIn;
     }
 
     //Getter
-    public Color getColor(){
+    public Color getColorOut(){
         return colorOut;
     }
 
@@ -28,12 +29,17 @@ public abstract class Figure {
     }
 
     //Setter
-    public void setColor(Color color){
+    public void setColorOut(Color color){
         this.colorOut = color;
     }
 
     public void setColorIn(Color colorIn) {
         this.colorIn = colorIn;
+    }
+
+    @Override
+    public String toString(){
+        return "ColorIn: " + colorIn + ", ColorOut: " + colorOut + "\n";
     }
 
     //Draw the figure

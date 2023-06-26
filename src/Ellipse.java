@@ -19,6 +19,7 @@ public class Ellipse extends Figure {
         this.p2 = p2;
     }
 
+    //Constructor with two pre-selected color
     public Ellipse(Point p1, int height, int width, Color colorOut, Color colorIn) {
         super(colorOut, colorIn);
         this.p1 = p1;
@@ -63,6 +64,11 @@ public class Ellipse extends Figure {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    @Override
+    public String toString(){
+        return super.toString() + "p1: " + p1 + "\n" + "p2: " + p2 + "p3: " + p3 + "\n" + "height: " + height + ", width: " + width + "\n";
+    }
    
     public void calculateDimensions() {
         int deltaX, deltaY;
@@ -93,7 +99,7 @@ public class Ellipse extends Figure {
 
     public void draw(Graphics g,Color c) {
         calculateDimensions(); 
-        g.setColor(this.getColor());
+        g.setColor(this.getColorOut());
         g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 
         g.setColor(c);//set color to fill in the ellipse
         colorIn = c;

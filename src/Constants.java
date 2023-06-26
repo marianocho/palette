@@ -6,5 +6,5 @@ public class Constants {
     public static final String SAVE_LABEL = "Save";
     public static final String OPEN_LABEL = "Open";
     public static final String CANCEL_LABEL = "Cancel";
-    public static final String NAME_ARQ_DRAWING = "saved_drawings.txt";
+    public static final String NAME_ARQ_DRAWING = "saved_drawings.txt"; //the archive that contains the saved drawings
 }

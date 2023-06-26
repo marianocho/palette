@@ -4,6 +4,7 @@ public class Save {
     private String creator, drawingName;
     private Vector<Figure> figures;
 
+    //Constructor
     public Save(String creator, String drawingName, Vector<Figure> figures) {
         this.creator  = creator;
         this.drawingName = drawingName;
@@ -34,6 +35,7 @@ public class Save {
         return this.figures;
     }
 
+    //Writes a line that contains all the informations of a drawing
     public String newLine() {
         String ret = "";
 
@@ -91,6 +93,7 @@ public class Save {
         return ret;
     }
 
+    //Checking if the object is a drawing, and if so, check if is the same drawing
     @Override
     public boolean equals(Object obj) {
         if (obj.getClass() != Save.class)

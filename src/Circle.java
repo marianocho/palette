@@ -103,6 +103,7 @@ public class Circle extends Figure {
                    diameter-1, diameter-1);
     }
 
+    //Draw when open a saved drawing
     @Override
     public void draw(Graphics g){
         g.setColor(this.colorOut); //border color

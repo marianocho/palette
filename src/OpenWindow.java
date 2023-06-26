@@ -3,6 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+/*The panel that appears when someone tries to open a drawing */
 public class OpenWindow extends JFrame {
     private JPanel creatorPanel;
     private JPanel namePanel;
@@ -18,22 +19,23 @@ public class OpenWindow extends JFrame {
 
         this.setLayout(new GridLayout(3, 2));
 
-        
+        //Creator section
         creatorPanel = new JPanel();
         creatorPanel.setLayout(new GridLayout(1, 0));
 
+        //Receives the creator of the drawing
         creatorField = new JTextField(15);
-
         creatorPanel.add(new JLabel(Constants.CREATOR_LABEL));
         creatorPanel.add(creatorField);
 
         this.add(creatorPanel);
 
+        //Name section
         namePanel = new JPanel();
         namePanel.setLayout(new GridLayout(1, 0));
 
+        //Receives the drawing's name
         nameField = new JTextField(15);
-
         namePanel.add(new JLabel(Constants.NAME_LABEL));
         namePanel.add(nameField);
 
@@ -52,7 +54,7 @@ public class OpenWindow extends JFrame {
 
         openButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                window.openDraw(creatorField.getText(), nameField.getText());
+                window.openDraw(creatorField.getText(), nameField.getText()); //gets the wanted drawing and open it
                 OpenWindow.this.dispose();
             }
         });

@@ -38,6 +38,7 @@ public abstract class Figure {
 
     //Draw the figure
     public abstract void draw(Graphics g, Color c);
+    //Draw when open a saved drawing
     public abstract void draw(Graphics g);
     public abstract void calculateDimensions();
 }

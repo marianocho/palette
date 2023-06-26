@@ -53,7 +53,9 @@ public class Point extends Figure{
         colorIn = c;
         g.fillOval(x, y, 5, 5);
     }
-
+    
+    //Draw when open a saved drawing
+    @Override
     public void draw(Graphics g) {
         g.setColor(this.colorOut); //contour color
         g.drawOval(x, y, 5, 5);

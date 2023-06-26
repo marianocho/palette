@@ -100,6 +100,7 @@ public class Rectangle extends Figure{
                    width-1, height-1);
     }
 
+    //Draw when open a saved drawing
     @Override
     public void draw(Graphics g){
         g.setColor(colorOut); //contour color

@@ -97,6 +97,7 @@ public class Square extends Figure {
 
     }
 
+    //Draw when open a saved drawing
     @Override
     public void draw(Graphics g){
         g.setColor(colorOut); //contour color

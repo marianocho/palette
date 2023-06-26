@@ -30,9 +30,8 @@ public class Window extends JFrame {
                    statusBar2 = new JLabel("Coordinates:");
 
 
-
+    //defining start colors
     private Color colorOut = Color.BLACK;
-
     private Color colorIn  = Color.WHITE;
 
     private Point p1;
@@ -61,9 +60,9 @@ public class Window extends JFrame {
 
         Container cntForm = this.getContentPane();
         cntForm.setLayout (new BorderLayout());
-        cntForm.add (pnlButtons,  BorderLayout.NORTH);
-        cntForm.add (pnlDrawing, BorderLayout.CENTER);
-        cntForm.add (pnlStatus,  BorderLayout.SOUTH);
+        cntForm.add (pnlButtons,  BorderLayout.NORTH); //drawing options
+        cntForm.add (pnlDrawing, BorderLayout.CENTER); //drawing region
+        cntForm.add (pnlStatus,  BorderLayout.SOUTH); //status region
 
         this.addWindowListener(new CloseWindow());
 
@@ -75,12 +74,12 @@ public class Window extends JFrame {
     }
 
     public void openDraw(String creator, String drawingName) {
-        Save save = IOSave.getSave(new Save(creator, drawingName, null));
+        Save save = IOSave.getSave(new Save(creator, drawingName, null)); //check if drawing exists
         cleanPanel();
 
-        if (save != null) {
+        if (save != null) { //if exists
             for (Figure figure : save.getFigures()) 
-                figures.add(figure);
+                figures.add(figure); //add figures to drawings figureList
 
             JOptionPane.showMessageDialog(null, "Your drawning has been opened!", 
                                             "Opened Drawing", JOptionPane.INFORMATION_MESSAGE);
@@ -93,14 +92,14 @@ public class Window extends JFrame {
     }
 
     public void saveNewDraw(String creator, String drawingName) {
-        if (figures.size() == 0) {
+        if (figures.size() == 0) { //drawing is empty
             JOptionPane.showMessageDialog(null, "Add any drawing before to save", 
                                           "Drawing not found", JOptionPane.ERROR_MESSAGE);
 
             return;
         }
 
-        if (IOSave.saveNewDrawing(new Save(creator, drawingName, figures))) 
+        if (IOSave.saveNewDrawing(new Save(creator, drawingName, figures))) //drawing is saved
             JOptionPane.showMessageDialog(null, "Your drawning has been saved!", 
                                          "Saved Drawing", JOptionPane.INFORMATION_MESSAGE);
         else 
@@ -132,11 +131,13 @@ public class Window extends JFrame {
             panel.add(button);
     }
 
+    //reset the drawing panel
     private void cleanPanel() {
         pnlDrawing.repaint();
         figures.removeAllElements();
     }
 
+    //loads all the figures that are in drawing
     private void printDrawLoaded() {
         for(int i = 0; i < figures.size(); i++) {
             figures.get(i).draw(pnlDrawing.getGraphics());
@@ -147,7 +148,7 @@ public class Window extends JFrame {
                             implements MouseListener,
                                        MouseMotionListener 
     {
-        Vector<Point> points = new Vector<>();
+        Vector<Point> points = new Vector<>(); //pencil is a sequence of points
 
         public MeuJPanel() {
             super();
@@ -198,6 +199,7 @@ public class Window extends JFrame {
         }
 
         public void mouseReleased(MouseEvent e) {
+            //if mouse is released and the cursor is in pencil mode
             if (action == DrawEnum.WAIT_PENCIL) {
                 for (int j = 1; j < points.size(); j++) {
                     figures.add(new Line(points.get(j-1), points.get(j), colorOut));
@@ -299,11 +301,12 @@ public class Window extends JFrame {
         }
 
         private void beginNewPencil() {
-            points.removeAllElements();
+            points.removeAllElements(); //reset the pencil
             setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
     }
 
+    //pencil mode
     protected class DrawnigPencil implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_PENCIL;
@@ -312,6 +315,7 @@ public class Window extends JFrame {
         } 
     }
 
+    //point mode
     protected class DrawingPoint implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_POINT; //WaitPoint
@@ -320,6 +324,7 @@ public class Window extends JFrame {
         }
     }
 
+    //line mode
     protected class DrawingLine implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_BEGIN_LINE; //BeginLine
@@ -328,6 +333,7 @@ public class Window extends JFrame {
         }
     }
 
+    //square mode
     protected class DrawingSquare implements ActionListener {
         public void actionPerformed(ActionEvent e) {
            action = DrawEnum.WAIT_BEGIN_SQUARE;
@@ -336,6 +342,7 @@ public class Window extends JFrame {
         }
     }
 
+    //rectangle mode
     protected class DrawingRectangle implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_BEGIN_RECTANGLE;
@@ -344,6 +351,7 @@ public class Window extends JFrame {
         }
     }
 
+    //circle mode
     protected class DrawingCircle implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_BEGIN_CIRCLE;
@@ -351,6 +359,7 @@ public class Window extends JFrame {
         }
     }
 
+    //ellipse mode
     protected class DrawingEllipse implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             action = DrawEnum.WAIT_BEGIN_ELLIPSE;
@@ -358,6 +367,7 @@ public class Window extends JFrame {
         }
     }
     
+    //choose color of the contour
     protected class ColorOut implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
@@ -371,6 +381,7 @@ public class Window extends JFrame {
         }
     }
 
+    //choose the filling color
     protected class ColorIn implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {

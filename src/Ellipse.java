@@ -99,7 +99,8 @@ public class Ellipse extends Figure {
         colorIn = c;
         g.fillOval(this.p1.getX()+1, this.p1.getY()+1, width-1, height-1);
     }
-
+    //Draw when open a saved drawing
+    @Override
     public void draw(Graphics g) {
         g.setColor(this.colorOut);
         g.drawOval(this.p1.getX(), this.p1.getY(), width, height); 

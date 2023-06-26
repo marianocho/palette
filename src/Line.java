@@ -53,6 +53,7 @@ public class Line extends Figure{
                    );
     }
 
+    //Draw when open a saved drawing
     @Override
     public void draw(Graphics g){
         g.setColor(this.colorOut); //defining the color of the drawing

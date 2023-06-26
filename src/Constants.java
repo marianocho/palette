@@ -1,5 +1,5 @@
 public class Constants {
-    public static String[] figureNames = {"Point", "Line", "Circle", "Ellipse", "Square", "Rectangle", "Outside", "Inside", "Open", "Save"};
+    public static String[] figureNames = {"Pencil", "Point", "Line", "Circle", "Ellipse", "Square", "Rectangle", "Outside", "Inside", "Clear", "Open", "Save"};
     public static final int NUMBER_OF_BUTTONS = figureNames.length;
     public static final String CREATOR_LABEL = "Creator: "; 
     public static final String NAME_LABEL = "Name: "; 

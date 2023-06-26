@@ -79,16 +79,16 @@ public class Window extends JFrame {
         cleanPanel();
 
         if (save != null) {
-            figures.addAll(save.getFigures());
-
-            for (Figure figure : save.getFigures())
-                figure.draw(pnlDrawing.getGraphics());
+            for (Figure figure : save.getFigures()) 
+                figures.add(figure);
 
             JOptionPane.showMessageDialog(null, "Your drawning has been opened!", 
                                             "Opened Drawing", JOptionPane.INFORMATION_MESSAGE);
         } else 
             JOptionPane.showMessageDialog(null, "The creator or name of drawing is not found", 
                                             "Error", JOptionPane.ERROR_MESSAGE);
+
+        printDrawLoaded();
 
     }
 
@@ -135,6 +135,12 @@ public class Window extends JFrame {
     private void cleanPanel() {
         pnlDrawing.repaint();
         figures.removeAllElements();
+    }
+
+    private void printDrawLoaded() {
+        for(int i = 0; i < figures.size(); i++) {
+            figures.get(i).draw(pnlDrawing.getGraphics());
+        }
     }
 
     private class MeuJPanel extends JPanel

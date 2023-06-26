@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public abstract class Figure{
+public abstract class Figure {
     protected Color colorIn, colorOut;
 
     //Default constructor

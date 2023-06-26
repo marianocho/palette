@@ -32,7 +32,7 @@ public class Window extends JFrame {
 
     //defining start colors
     private Color colorOut = Color.BLACK;
-    private Color colorIn  = Color.WHITE;
+    private Color colorIn  = Color.BLACK;
 
     private Point p1;
 

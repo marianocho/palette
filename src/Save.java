@@ -82,7 +82,7 @@ public class Save {
             if (figure instanceof Ellipse) {
                 Ellipse ellipse = (Ellipse) figure;
 
-                ret += "e," + ellipse.getP1().getX() + "," + ellipse.getP2().getY() + "," 
+                ret += "e," + ellipse.getP1().getX() + "," + ellipse.getP1().getY() + "," 
                             + ellipse.getHeight() + "," + ellipse.getWidth() + "," +
                               ellipse.getColor().getRGB() + "," + ellipse.getColorIn().getRGB() + ",";
             }

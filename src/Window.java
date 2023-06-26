@@ -69,26 +69,25 @@ public class Window extends JFrame {
 
         IOSave.readArchive();
 
-        this.setSize (1200,600);
+        this.setSize (1400,800);
+        this.setResizable(false);
         this.setVisible (true);
     }
 
     public void openDraw(String creator, String drawingName) {
         Save save = IOSave.getSave(new Save(creator, drawingName, null));
-        
+        cleanPanel();
+
         if (save != null) {
-            repaint();
-            figures.removeAllElements();
-            figures = save.getFigures();
-            
+            figures.addAll(save.getFigures());
+
             for (Figure figure : save.getFigures())
-                figure.draw(getGraphics());
+                figure.draw(pnlDrawing.getGraphics());
 
             JOptionPane.showMessageDialog(null, "Your drawning has been opened!", 
                                             "Opened Drawing", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else 
-            JOptionPane.showMessageDialog(null, "An unexpected error occurred", 
+        } else 
+            JOptionPane.showMessageDialog(null, "The creator or name of drawing is not found", 
                                             "Error", JOptionPane.ERROR_MESSAGE);
 
     }
@@ -131,6 +130,11 @@ public class Window extends JFrame {
     private void addButtonsToPanel(JPanel panel) {
         for (JButton button : buttons) 
             panel.add(button);
+    }
+
+    private void cleanPanel() {
+        pnlDrawing.repaint();
+        figures.removeAllElements();
     }
 
     private class MeuJPanel extends JPanel
@@ -191,7 +195,7 @@ public class Window extends JFrame {
             if (action == DrawEnum.WAIT_PENCIL) {
                 for (int j = 1; j < points.size(); j++) {
                     figures.add(new Line(points.get(j-1), points.get(j), colorOut));
-                    figures.get(figures.size() - 1).draw(getGraphics(), colorIn);
+                    figures.get(figures.size() - 1).draw(pnlDrawing.getGraphics(), colorIn);
                 }
             }
         }
@@ -377,8 +381,7 @@ public class Window extends JFrame {
 
     protected class ClearAll implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            repaint();
-            figures.removeAllElements();
+            cleanPanel();
         }
     }
 
